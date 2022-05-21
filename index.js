@@ -1,51 +1,73 @@
-// Function for the computer to randomly generate either rock, paper, or scissors
 function computerPlay() {
     let x = Math.floor(Math.random() * 3);
-
-    if (x === 0){
-        x = 'Rock';
-    }else if (x === 1){
-        x = 'Paper';
-    } else if(x === 2){
-        x = 'Scissors';
+    
+    if (x === 0) {
+        return 'rock';
+    } else if (x === 1) {
+        return 'paper';
+    } else {
+        return 'scissors';
     }
-    console.log(x);
-    return x;
 }
 
-// Single round function parameters declared
-const computerSelection = computerPlay();
+let computerSelection = computerPlay();
 let playerSelection;
+let playerScore = 0;
+let computerScore = 0;
+let i;
 
-// Function to verify user selection, play a single round of rock paper scissors, and declare a winner
+function playerChoice() {
+    playerSelection = prompt('Choose Rock, Paper, or Scissors').toLowerCase()
+
+    if (playerSelection === 'rock' || 'paper' || 'scissors') {
+        return playerSelection;
+    } else {
+        playerSelection = prompt('Choose Rock, Paper, or Scissors');
+    }
+}
 function playRound(playerSelection, computerSelection) {
+   
+    if (playerSelection === 'rock' && computerSelection === 'paper' ||
+        playerSelection === 'paper' && computerSelection === 'scissors' ||
+        playerSelection === 'scissors' && computerSelection === 'rock') {
+            console.log(`You lose, ${computerSelection} beats ${playerSelection}.`);
+            computerScore++;
+            return `You lose, ${computerSelection} beats ${playerSelection}.`;
 
-        while (playerSelection !== 'rock' && playerSelection !== 'paper' && playerSelection !== 'scissors') {
-            playerSelection = prompt('Rock, Paper, or Scissors?').toLowerCase() }
-
-        if (playerSelection === 'rock' && computerSelection ==='Paper' ||
-        playerSelection === 'paper' && computerSelection === 'Scissors' ||
-        playerSelection === 'scissors' && computerSelection === 'Rock') {
-            return `You lose! ${computerSelection.toLowerCase()} beats ${playerSelection}.`;
-            
-        } else if (playerSelection === 'rock' && computerSelection === 'Scissors' ||
-        playerSelection === 'paper' && computerSelection === 'Rock' ||
-        playerSelection === 'scissors' && computerSelection === 'Paper') {
-            return `Congrats! ${playerSelection} beats ${computerSelection.toLowerCase()} You win.`;
-        
+        } else if (playerSelection === 'rock' && computerSelection === 'scissors' ||
+                   playerSelection === 'paper' && computerSelection === 'rock' ||
+                   playerSelection === 'scissors' && computerSelection === 'paper') {
+                        console.log(`You win, ${playerSelection} beats ${computerSelection}.`);
+                        playerScore++;
+                        return `You win, ${playerSelection} beats ${computerSelection}.`;
+       
+        } else if (playerSelection === computerSelection) {
+            console.log('Round tied.');
+            return 'Round tied.';
+       
         } else {
-            return 'Tie game. Play again';
+            console.log('Incorrect input. Please choose Rock, Paper or Scissors.');
+            return 'Incorrect input. Please choose Rock, Paper or Scissors.';
         }
 }
 
-
-
-//
-
 function game() {
+
     for (let i = 0; i < 5; i++) {
-        computerPlay();
-        playRound(playerSelection, computerSelection);
-        console.log(playRound(playerSelection, computerSelection));
+       
+        let computerSelection = computerPlay();
+        playerChoice();
+
+        if (playRound(playerSelection, computerSelection) === 'Incorrect input. Please choose Rock, Paper or Scissors.') {
+            i--;
+        }
+    }
+
+    if (playerScore > computerScore) {
+        return `Congrats you won the Game ${playerScore} - ${computerScore}`;
+    } else if (playerScore < computerScore) {
+        return `Too bad, The computer won ${computerScore} - ${playerScore}.`;
+    } else {
+        return `Tie game ${computerScore} - ${playerScore}.`;
     }
 }
